@@ -1,0 +1,201 @@
+/*改變選取文字樣式*/
+::selection{
+    background-color: #d50000;
+    color: #ffffff;
+}
+
+/*漸顯效果start*/
+.fade-in {
+    animation: fadeIn 0.5s ease-in; /* 動畫名稱、時長、緩動函數 */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0; /* 初始完全透明 */
+    }
+    100% {
+        opacity: 1; /* 最終完全不透明 */
+    }
+}
+/*漸顯效果end*/
+
+.headbox{
+    display: flex; /*使用flex布局*/
+    flex-wrap: wrap;
+    justify-content: space-between; /*水平向元素兩側對齊*/
+    align-items: center; /*垂直向元素置中*/
+    margin: 40px 50px 20px 50px;
+}
+
+.webtitle{
+    font-size: 25px;
+    margin: 0px 0px;
+    padding-top: 2px;
+}
+
+.webtitle a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.menu{
+    list-style: none; /*去除清單標題符號*/
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.menu li{
+    margin: 0px 10px;
+}
+
+.menu li a{
+    text-decoration: none; /*去除連結底線*/
+    color: #ffffff;
+    font-size: 15px;
+    transition: 0.25s;
+}
+
+/*Hamburger Menu*/
+.hammenu{
+    display: none;
+}
+.menulist{
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hamicon{
+        cursor: pointer;
+        transition: 0.25s;
+    }
+    .hamicon:hover{
+        opacity: 0.7;
+    }
+    .menulistbox{
+        display: flex;
+        justify-content: center;
+    }
+    .headbox{
+        align-items: flex-start;
+    }
+    .menu{
+        display: none;
+    }
+    .hammenu{
+        display: flex;
+    }
+    .mo-menu{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        padding: 15px 0px;
+    }
+    .mo-menu li{
+        font-size: 18px;
+        margin: 10px 0px;
+    }
+    .mo-menu li a{
+        font-weight: bold;
+        text-decoration: none;
+        color: #ffffff;
+        transition: 0.25s;
+    }
+    .mo-menu li a:hover{
+        color: #ff0000;
+    }
+    .mo-menu.show{
+        display: flex;
+    }
+    .navbar{
+        margin-top: 3px;
+    }
+}
+
+
+/*Hamburger Menu*/
+
+.menu li a:hover{
+    color: #ff0000;
+}
+
+.siteend{
+    margin: 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.endname{
+    font-size: 25px;
+    color: #ffffff;
+    margin: 0px 0px;
+}
+
+.copyright{
+    font-size: 12px;
+    color: #ffffff;
+    margin: 0px 0px;
+}
+
+.endintro{
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.siteend div ul{
+    list-style: none; /*去除清單標題符號*/
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.siteend div ul li{
+    margin: 0px 10px;
+}
+
+.siteend div ul li a{
+    text-decoration: none; /*去除連結底線*/
+    color: #ffffff;
+    font-size: 15px;
+    transition: 0.25s;
+}
+
+.siteend div ul li a:hover{
+    color: #ff0000;
+}
+
+@media (max-width: 768px) {
+    .siteend{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .endnamebox{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .siteend div ul{
+        display: none;
+    }
+}
+
+@media (max-width: 400px) {
+    .endname{
+        font-size: 6vw;
+    }
+    .endintro{
+        font-size: 4vw;
+    }
+}
+
+/*游標設定為箭頭*/
+.mouse-de{
+    cursor: default;
+}

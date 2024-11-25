@@ -1,0 +1,128 @@
+body {
+    background-color: #000000; /*設定網頁背景色為黑色*/
+    color: #ffffff; /*設定文字顏色為白色*/
+    margin: 0; /*移除頁面預設邊距*/
+    padding: 0; /*移除頁面預設邊距*/
+    font-family: Arial, sans-serif; /* 設定主要字體為 Arial，無法使用時採用無襯線字體 */
+}
+
+.hometitle{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hometitletxt-ch{
+    color: #ffffff;
+    font-size: 35px;
+    letter-spacing: 5px;
+    margin: 0px;
+}
+
+.hometitletxt-en{
+    color: #ffffff;
+    font-size: 15px;
+    letter-spacing: 3px;
+    margin: 5px 0px 0px 0px;
+}
+
+/*首頁大標題文字大小設置*/
+@media (max-width: 500px) {
+    .hometitle{
+        height: 150px;
+    }
+    .hometitletxt-ch{
+        font-size: 6vw;
+    }
+    .hometitletxt-en{
+        font-size: 2.5vw;
+    }
+}
+
+.topbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.top{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.topwork{
+    position: relative; /* 設置相對定位，作為內部絕對定位元素的參考基準 */
+    width: 270px; /* 設定容器寬度 */
+    height: 420px; /* 設定容器高度 */
+    margin: 10px 30px;
+    overflow: hidden; /* 隱藏溢出的內容 */
+}
+
+.topwork-img{
+    width: 100%; /* 圖片寬度填滿容器 */
+    height: 100%; /* 圖片高度填滿容器 */
+    object-fit: cover; /* 確保圖片保持比例並裁剪溢出的部分 */
+}
+
+.topwork-txtbox{
+    position: absolute; /* 絕對定位，使區塊能自由擺放於容器內 */
+    bottom: 0; /* 固定於容器底部 */
+    width: 100%; /* 區塊寬度與容器一致 */
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景，用於突出文字 */
+    text-align: center; /* 文字水平置中 */
+    font-size: 16px; /* 設定文字大小 */
+}
+
+.topwork-txtbox p{
+    font-size: 17px;
+    padding: 0;
+    margin: 20px 0px 5px 0px;
+}
+
+.topwork-txtbox a{
+    font-size: 14px;
+    color: #ffffff;
+    padding: 0;
+    margin: 0px;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.topwork-txtbox a:hover{
+    color: #ff0000;
+}
+
+.topwork-buttom{
+    margin: 0px 0px 20px 0px;
+}
+
+.viewmore{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0px 60px 0px;
+}
+
+.viewmore p a{
+    font-size: 14px;
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 8px 12px;
+    border: 2px solid #ffffff;
+    transition: 0.25s;
+    letter-spacing: 0.2px;
+}
+
+.viewmore p a:hover{
+    color: #000000;
+    background-color: #ffffff;
+}

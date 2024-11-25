@@ -1,0 +1,136 @@
+body {
+    background-color: #000000; /*設定網頁背景色為黑色*/
+    color: #ffffff; /*設定文字顏色為白色*/
+    margin: 0; /*移除頁面預設邊距*/
+    padding: 0; /*移除頁面預設邊距*/
+    font-family: Arial, sans-serif; /* 設定主要字體為 Arial，無法使用時採用無襯線字體 */
+}
+
+/*標題樣式*/
+.titlebox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0px;
+}
+
+.title-ch{
+    margin: 0;
+    padding: 0;
+    font-size: 35px;
+    letter-spacing: 5px;
+    color: #ffffff;
+}
+
+.title-en{
+    color: #ffffff;
+    font-size: 15px;
+    letter-spacing: 3px;
+    margin: 3px 0px 0px 0px;
+}
+
+@media (max-width: 500px) {
+    .titlebox{
+        height: 10vw;
+    }
+    .title-ch{
+        font-size: 6vw;
+    }
+    .title-en{
+        font-size: 2.5vw;
+    }
+    .linebar{
+        display: none;
+    }
+}
+
+/*標題樣式*/
+
+.clip{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clipwork{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 960px;
+}
+@media (max-width: 960px) {
+    .clipwork{
+        justify-content: center;
+    }
+}
+
+.work{
+    background-color: rgb(255, 255, 255,0.15);
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 21px;
+    margin: 10px 10px;
+}
+
+.intro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.work img{
+    width: 75px;
+    height: 75px;
+    margin: 6px;
+    border-radius: 15px;
+}
+
+.introtxt{
+    margin-left: 5px;
+}
+
+.introtxt p{
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 1.5px;
+    margin: 0 0 4px 0;
+}
+
+.hashtagbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.hashtag a{
+    font-size: 12px;
+    color: #DBD6E1;
+    text-decoration: none;
+    padding: 3px 6px;
+    border-radius: 5px;
+    transition: 0.25s;
+    margin-right: 5px;
+}
+
+.hashtag a:hover{
+    opacity: 0.7;
+}
+
+.work a img{
+    height: 40px;
+    width: 40px;
+    margin-right: 15px;
+    transition: 0.25s;
+}
+
+.play:hover{
+    opacity: 0.7;
+}

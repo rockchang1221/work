@@ -1,84 +1,118 @@
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #fdfbf6;
+  background-color: #f7f9fa;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 40px 20px;
+  color: #222;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 h1 {
-  margin-top: 40px;
-  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.search-box {
-  margin: 20px 0;
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 input {
-  padding: 8px 12px;
+  padding: 10px;
   font-size: 16px;
+  width: 250px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 200px;
+  border-radius: 6px 0 0 6px;
+  outline: none;
 }
 
 button {
-  padding: 8px 16px;
+  padding: 10px 16px;
   font-size: 16px;
   background-color: #121212;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  margin-left: 8px;
+  border-radius: 0 6px 6px 0;
   cursor: pointer;
 }
 
 .ticket {
-  margin-top: 30px;
-  background: #fff;
-  border: 1px dashed #ccc;
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 12px;
-  padding: 24px;
-  width: 360px;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   display: none;
-  flex-direction: column;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.ticket h2 {
-  font-size: 20px;
-  margin-bottom: 8px;
-  color: #222;
+.status-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
-.ticket .info {
-  margin-bottom: 6px;
+.status {
+  font-weight: bold;
   font-size: 16px;
 }
 
-.ticket .label {
+.status.success {
+  color: #28a745;
+}
+
+.reminder {
+  font-size: 14px;
+  color: #888;
+}
+
+.flight-summary {
+  margin-bottom: 20px;
+  border-top: 1px dashed #ccc;
+  border-bottom: 1px dashed #ccc;
+  padding: 12px 0;
+}
+
+.flight-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.flight-info .route {
   font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.flight-info .date {
   color: #555;
 }
 
-.not-found {
-  color: #c00;
-  margin-top: 20px;
-  display: none;
+.info-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-.quote {
-  margin-top: 16px;
-  font-style: italic;
-  color: #666;
+.info-item {
+  flex: 1 1 45%;
 }
 
-.airline {
-  font-weight: bold;
-  margin-bottom: 12px;
+.info-item.full {
+  flex-basis: 100%;
+}
+
+label {
   font-size: 14px;
-  color: #888;
+  color: #777;
+}
+
+.not-found {
+  margin-top: 20px;
+  color: #c00;
+  text-align: center;
 }

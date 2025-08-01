@@ -7,25 +7,59 @@
 </head>
 <body>
 
-  <h1>🎫 夢想航班查詢系統</h1>
+  <div class="container">
+    <h1>🎫 夢想航班查詢</h1>
 
-  <div class="search-box">
-    <input type="text" id="studentId" placeholder="輸入學生編號">
-    <button onclick="searchTicket()">查詢</button>
+    <div class="search-bar">
+      <input type="text" id="studentId" placeholder="請輸入學生編號（例如 A1234）">
+      <button onclick="searchTicket()">查詢</button>
+    </div>
+
+    <div id="ticket" class="ticket">
+      <div class="status-line">
+        <span class="status success">✅ 已出票</span>
+        <span class="reminder">請提早抵達學測考場報到</span>
+      </div>
+
+      <div class="flight-summary">
+        <div class="flight-info">
+          <span class="route">台灣高三學生中心 → 夢想大學</span>
+          <span class="date">考試日：2026 / 01 / 17</span>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-item">
+          <label>姓名</label>
+          <div id="ticketName">--</div>
+        </div>
+        <div class="info-item">
+          <label>編號</label>
+          <div id="ticketId">--</div>
+        </div>
+        <div class="info-item">
+          <label>目標學校</label>
+          <div id="ticketSchool">--</div>
+        </div>
+        <div class="info-item">
+          <label>科系</label>
+          <div id="ticketDept">--</div>
+        </div>
+        <div class="info-item">
+          <label>目標成績</label>
+          <div id="ticketScore">--</div>
+        </div>
+        <div class="info-item full">
+          <label>備註</label>
+          <div id="ticketQuote">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="notFound" class="not-found">
+      ❌ 查無此機票，請確認輸入的編號是否正確。
+    </div>
   </div>
-
-  <div class="ticket" id="ticketCard">
-    <div class="airline">✈️ OO補習班 | 夢航計畫專屬機票</div>
-    <h2 id="ticketName">乘客：</h2>
-    <div class="info"><span class="label">編號：</span><span id="ticketId"></span></div>
-    <div class="info"><span class="label">出發日：</span><span id="ticketDate">2026/01/17</span></div>
-    <div class="info"><span class="label">預計目的地：</span><span id="ticketSchool"></span>（<span id="ticketDept"></span>）</div>
-    <div class="info"><span class="label">座位：</span><span id="ticketSeat"></span></div>
-    <div class="info"><span class="label">成績目標：</span><span id="ticketScore"></span></div>
-    <div class="quote" id="ticketQuote"></div>
-  </div>
-
-  <div class="not-found" id="notFound">❌ 查無此機票，請確認編號是否正確</div>
 
   <script>
     let students = [];
@@ -36,33 +70,26 @@
       .catch(err => console.error('讀取資料錯誤', err));
 
     function searchTicket() {
-      const idInput = document.getElementById('studentId').value.trim();
-      const student = students.find(s => s.id === idInput);
+      const id = document.getElementById('studentId').value.trim();
+      const student = students.find(s => s.id === id);
 
-      const card = document.getElementById('ticketCard');
+      const card = document.getElementById('ticket');
       const notFound = document.getElementById('notFound');
 
       if (student) {
-        document.getElementById('ticketName').textContent = `乘客：${student.name}`;
+        document.getElementById('ticketName').textContent = student.name;
         document.getElementById('ticketId').textContent = student.id;
         document.getElementById('ticketSchool').textContent = student.school;
         document.getElementById('ticketDept').textContent = student.department;
-        document.getElementById('ticketSeat').textContent = randomSeat();
         document.getElementById('ticketScore').textContent = student.score;
         document.getElementById('ticketQuote').textContent = `“${student.quote}”`;
 
-        card.style.display = 'flex';
+        card.style.display = 'block';
         notFound.style.display = 'none';
       } else {
         card.style.display = 'none';
         notFound.style.display = 'block';
       }
-    }
-
-    function randomSeat() {
-      const row = Math.floor(Math.random() * 30) + 1;
-      const col = ['A', 'B', 'C', 'D', 'E', 'F'][Math.floor(Math.random() * 6)];
-      return `${row}${col}`;
     }
   </script>
 

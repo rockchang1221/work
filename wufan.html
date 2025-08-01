@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>夢想電子護照查詢系統</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 夢想電子護照</h1>
+    <form id="search-form">
+      <input type="text" id="id" placeholder="請輸入學生編號" required>
+      <button type="submit">查詢</button>
+    </form>
+
+    <div id="passport" class="passport hidden">
+      <h2>🎫 電子護照</h2>
+      <p><strong>姓名：</strong><span id="p-name"></span></p>
+      <p><strong>編號：</strong><span id="p-id"></span></p>
+      <p><strong>目標大學：</strong><span id="p-school"></span></p>
+      <p><strong>科系：</strong><span id="p-dept"></span></p>
+      <p><strong>目標成績：</strong><span id="p-score"></span></p>
+      <p><strong>學測日期：</strong><span id="p-date"></span></p>
+      <p><strong>座右銘：</strong><em id="p-quote"></em></p>
+    </div>
+
+    <div id="not-found" class="hidden">
+      <p>查無資料，請確認學生編號是否正確。</p>
+    </div>
+  </div>
+
+  <script>
+    let students = [];
+
+    // 載入資料
+    fetch('./students.json')
+      .then(res => res.json())
+      .then(data => students = data);
+
+    // 表單提交
+    document.getElementById('search-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const id = document.getElementById('id').value.trim();
+
+      const student = students.find(s => s.id === id);
+
+      const passportDiv = document.getElementById('passport');
+      const notFoundDiv = document.getElementById('not-found');
+
+      if (student) {
+        document.getElementById('p-name').textContent = student.name;
+        document.getElementById('p-id').textContent = student.id;
+        document.getElementById('p-school').textContent = student.school;
+        document.getElementById('p-dept').textContent = student.department;
+        document.getElementById('p-score').textContent = student.score;
+        document.getElementById('p-date').textContent = student.exam_date;
+        document.getElementById('p-quote').textContent = student.quote || '';
+
+        passportDiv.classList.remove('hidden');
+        notFoundDiv.classList.add('hidden');
+      } else {
+        passportDiv.classList.add('hidden');
+        notFoundDiv.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

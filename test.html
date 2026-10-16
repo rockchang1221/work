@@ -3,84 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>吳凡數學 - 116 學測電子紀念卡</title>
+    <title>電子紀念卡生成器 - 官方複刻版</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #060a17;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
             touch-action: manipulation;
         }
-        /* 隱藏預設檔案上傳按鈕 */
+        .font-display {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
         #realFileIn {
             display: none;
         }
-        /* 彈跳預覽視窗動畫 */
         .modal-fade {
-            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
+            from { opacity: 0; transform: scale(0.96); }
             to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
-<body class="min-h-screen text-white flex flex-col items-center justify-between p-4 pb-8">
+<body class="min-h-screen flex flex-col items-center justify-between p-3 sm:p-5 pb-8">
 
     <header class="w-full max-w-md text-center py-2">
-        <h1 class="text-xl font-black tracking-widest text-amber-400">WF-116 MEMORY</h1>
-        <p class="text-xs text-slate-400 mt-1">學測戰區電子紀念卡生成器</p>
+        <h1 class="text-2xl font-black tracking-wider text-slate-800 font-display uppercase">WuFan Memory Card</h1>
+        <p class="text-xs text-slate-500 font-medium">吳凡數學陪你戰115學測 · 專屬紀念卡生成系統</p>
     </header>
 
     <main class="w-full max-w-md flex flex-col items-center gap-4 my-2">
-        <div class="w-full aspect-[9/16] bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-800 relative flex items-center justify-center">
-            <!-- 畫布設定為高解析度 1080x1920，確保產出的圖檔極度清晰 -->
+        <!-- 畫布預覽容器 (9:16) -->
+        <div class="w-full aspect-[9/16] bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 relative flex items-center justify-center">
             <canvas id="cardCanvas" width="1080" height="1920" class="w-full h-full object-contain"></canvas>
         </div>
 
-        <div class="w-full bg-slate-900/85 backdrop-blur border border-slate-800 rounded-2xl p-4 flex flex-col gap-3 shadow-xl">
+        <div class="w-full bg-white border border-slate-200 rounded-2xl p-4 flex flex-col gap-3.5 shadow-sm">
+            <!-- 1. 上傳照片 -->
             <div>
-                <label class="block text-xs font-bold text-slate-400 mb-1">1. 選擇或拍攝你的當前狀態照</label>
-                <label for="realFileIn" class="w-full block bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl text-center cursor-pointer transition shadow-lg text-sm">
-                    📷 點此上傳 / 拍攝照片
+                <label class="block text-xs font-bold text-slate-500 mb-1">1. 照片上傳 / 拍攝</label>
+                <label for="realFileIn" class="w-full block bg-[#1b427d] hover:bg-[#153463] active:bg-[#0f2445] text-white font-bold py-2.5 px-4 rounded-xl text-center cursor-pointer transition shadow text-sm">
+                    📷 點此上傳中央照片
                 </label>
                 <input type="file" id="realFileIn" accept="image/*">
             </div>
 
-            <div>
-                <label class="block text-xs font-bold text-slate-400 mb-1">2. 輸入你的戰鬥宣言（最多 12 字）</label>
-                <input type="text" id="userTextInput" value="為台大電機而戰" maxlength="12" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white text-base focus:outline-none focus:border-amber-400 transition" placeholder="輸入想顯示在卡片上的話...">
+            <!-- 2. 姓名與目標大學 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">2. 我的姓名</label>
+                    <input type="text" id="userNameInput" value="吳小凡" maxlength="10" placeholder="例如：吳小凡" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold text-sm focus:outline-none focus:border-[#1b427d] transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1">3. 目標大學</label>
+                    <input type="text" id="targetUniInput" value="台灣" maxlength="12" placeholder="例如：台灣大學" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-bold text-sm focus:outline-none focus:border-[#1b427d] transition">
+                </div>
             </div>
 
-            <button id="generateBtn" class="w-full bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-black py-3.5 px-4 rounded-xl text-center shadow-lg transition text-base mt-1">
-                ✨ 一鍵合成紀念卡片
+            <!-- 3. 給自己的一句話 -->
+            <div>
+                <label class="block text-xs font-bold text-slate-500 mb-1">4. 想對自己說的一段話</label>
+                <input type="text" id="userQuoteInput" value="全力以赴，頂標非我莫屬！" maxlength="28" placeholder="寫下一句堅持下去的決心..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 font-medium text-sm focus:outline-none focus:border-[#1b427d] transition">
+            </div>
+
+            <button id="generateBtn" class="w-full bg-[#1b427d] hover:bg-[#153463] active:bg-[#0f2445] text-white font-black py-3 px-4 rounded-xl text-center shadow-lg transition text-base mt-1">
+                ✨ 合成高畫質卡片並匯出
             </button>
         </div>
     </main>
 
-    <footer class="w-full max-w-md text-center text-[11px] text-slate-500">
-        吳凡數學 • 決不退縮與您並肩作戰
-    </footer>
-
-    <!-- 彈跳預覽視窗（解決 iOS Safari 無法直接下載的痛點，讓使用者長按圖片儲存） -->
-    <div id="resultModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex flex-col items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-5 flex flex-col items-center modal-fade shadow-2xl relative">
-            <h3 class="text-base font-bold text-amber-400 mb-2">🎉 紀念卡合成完畢！</h3>
-            <p class="text-xs text-slate-300 text-center mb-4">
-                <span class="text-amber-300 font-bold">iOS / Android 用戶：</span><br>請直接「長按下方圖片」儲存至手機相簿。
+    <div id="resultModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex flex-col items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 w-full max-w-sm rounded-3xl p-5 flex flex-col items-center modal-fade shadow-2xl relative">
+            <h3 class="text-base font-black text-slate-900 mb-1">🎉 紀念卡已合成完畢！</h3>
+            <p class="text-xs text-slate-500 text-center mb-3">
+                <span class="text-[#1b427d] font-bold">手機用戶：</span>請直接「長按下方圖片」選擇「加入照片」儲存至手機相簿。
             </p>
             
-            <div class="w-full aspect-[9/16] bg-black rounded-xl overflow-hidden mb-4 border border-slate-700 relative shadow-inner">
+            <div class="w-full aspect-[9/16] bg-slate-100 rounded-xl overflow-hidden mb-4 border border-slate-200 relative shadow-inner">
                 <img id="resultImagePreview" class="w-full h-full object-contain" alt="合成紀念卡預覽">
             </div>
 
             <div class="flex gap-2 w-full">
-                <button id="closeModalBtn" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl text-sm transition">
-                    關閉重試
+                <button id="closeModalBtn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm transition">
+                    關閉返回
                 </button>
-                <a id="downloadLink" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-sm text-center transition flex items-center justify-center" download="WF116-Memory-Card.png">
-                    直接下載檔案
+                <a id="downloadLink" class="flex-1 bg-[#1b427d] hover:bg-[#153463] text-white font-bold py-2.5 rounded-xl text-sm text-center transition flex items-center justify-center" download="WUFAN-115-MEMORY.png">
+                    下載圖片檔案
                 </a>
             </div>
         </div>
@@ -90,7 +103,9 @@
         const canvas = document.getElementById('cardCanvas');
         const ctx = canvas.getContext('2d');
         const realFileIn = document.getElementById('realFileIn');
-        const userTextInput = document.getElementById('userTextInput');
+        const userNameInput = document.getElementById('userNameInput');
+        const targetUniInput = document.getElementById('targetUniInput');
+        const userQuoteInput = document.getElementById('userQuoteInput');
         const generateBtn = document.getElementById('generateBtn');
         
         const resultModal = document.getElementById('resultModal');
@@ -99,123 +114,185 @@
         const downloadLink = document.getElementById('downloadLink');
 
         let uploadedImage = null;
-        const cardId = "No." + Math.floor(10000 + Math.random() * 90000);
 
-        // 核心繪製邏輯：將外框、圖片、動態文字、時間戳記完美融合成單一圖層
-        function drawCard() {
-            // 1. 卡片底色（高質感純白卡片基底）
-            ctx.fillStyle = '#ffffff';
-            roundRect(ctx, 40, 40, 1000, 1840, 24, true, false);
+        // 畫布基礎規格
+        const W = 1080;
+        const H = 1920;
+        const BAND_H = 150;
+        const PA = { x: 24, y: 172, w: 1032, h: 1260 }; // 照片區寬高與位置
+        const FOOT_H = 46;
+        const BRAND_COLOR = '#1b427d';
+        const BRAND_DARK = '#122e58';
+        const ACCENT_GOLD = 'rgba(251,191,36,0.9)';
 
-            // 2. 頂部深藍色榮譽橫幅
-            ctx.fillStyle = '#0f1a30';
-            roundRect(ctx, 40, 40, 1000, 180, {tl: 24, tr: 24, bl: 0, br: 0}, true, false);
-
-            // 頂部橫幅文字
-            ctx.fillStyle = '#ffd700';
-            ctx.font = 'bold 38px sans-serif';
-            ctx.fillText('WF-116', 80, 130);
-
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '32px sans-serif';
-            ctx.fillText('2027 116學測 • MEMORY', 240, 130);
-
-            // 右上角隨機編號
-            ctx.textAlign = 'right';
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = 'bold 30px sans-serif';
-            ctx.fillText(cardId, 1000, 130);
-            ctx.textAlign = 'left';
-
-            // 3. 中間照片區域（照片裁切並完美貼合）
-            ctx.save();
+        // 繪製圓角矩形
+        function roundRect(ctx, x, y, w, h, r) {
             ctx.beginPath();
-            ctx.rect(80, 250, 920, 1050);
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        // 繪製頂部獎盃線條
+        function drawTrophy(ctx, cx, cy, color) {
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 5;
+            ctx.lineJoin = "round";
+            ctx.lineCap = "round";
+            
+            // 杯身
+            ctx.beginPath();
+            ctx.moveTo(cx - 22, cy - 26);
+            ctx.lineTo(cx + 22, cy - 26);
+            ctx.quadraticCurveTo(cx + 22, cy + 6, cx, cy + 10);
+            ctx.quadraticCurveTo(cx - 22, cy + 6, cx - 22, cy - 26);
+            ctx.stroke();
+
+            // 兩側耳把
+            ctx.beginPath();
+            ctx.arc(cx - 26, cy - 14, 10, Math.PI * 0.5, Math.PI * 1.5);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(cx + 26, cy - 14, 10, Math.PI * 1.5, Math.PI * 0.5);
+            ctx.stroke();
+
+            // 底座
+            ctx.beginPath();
+            ctx.moveTo(cx, cy + 10);
+            ctx.lineTo(cx, cy + 20);
+            ctx.moveTo(cx - 14, cy + 24);
+            ctx.lineTo(cx + 14, cy + 24);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // 繪製照片未上傳時的淺灰色佔位區塊
+        function drawPhotoPlaceholder(ctx, area) {
+            ctx.fillStyle = '#f1f5f9';
+            ctx.fillRect(area.x, area.y, area.w, area.h);
+
+            // 繪製邊框
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(area.x + 1.5, area.y + 1.5, area.w - 3, area.h - 3);
+
+            // 中間提示文字
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '700 48px "Noto Sans TC", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('📷 請點擊下方按鈕上傳照片', area.x + area.w / 2, area.y + area.h / 2);
+        }
+
+        // 繪製完整卡片內容
+        function drawCard() {
+            // 1. 純白卡片底色
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, W, H);
+
+            // 2. 頂部深藍色橫幅 (高度 BAND_H = 150)
+            const bandGrad = ctx.createLinearGradient(0, 0, 0, BAND_H);
+            bandGrad.addColorStop(0, BRAND_COLOR);
+            bandGrad.addColorStop(1, BRAND_DARK);
+            ctx.fillStyle = bandGrad;
+            ctx.fillRect(0, 0, W, BAND_H);
+
+            // 頂部左側：只保留 "2026 WuFan Math"
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '700 52px "Barlow Condensed", sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.letterSpacing = '1.5px';
+            ctx.fillText('2026 WuFan Math', 48, BAND_H / 2);
+            ctx.letterSpacing = '0px';
+
+            // 頂部右側：只保留獎盃圖標
+            drawTrophy(ctx, W - 68, BAND_H / 2, '#ffffff');
+
+            // 頂部下緣 3px 細金線
+            ctx.fillStyle = ACCENT_GOLD;
+            ctx.fillRect(0, BAND_H - 3, W, 3);
+
+            // 3. 中間照片區域 (x:24, y:172, w:1032, h:1260，圓角 r=14)
+            ctx.save();
+            roundRect(ctx, PA.x, PA.y, PA.w, PA.h, 14);
             ctx.clip();
 
             if (uploadedImage) {
-                drawCoverImage(ctx, uploadedImage, 80, 250, 920, 1050);
+                drawCoverImage(ctx, uploadedImage, PA.x, PA.y, PA.w, PA.h);
             } else {
-                ctx.fillStyle = '#1e293b';
-                ctx.fillRect(80, 250, 920, 1050);
-                ctx.fillStyle = '#64748b';
-                ctx.font = '36px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('（點擊上方按鈕上傳照片）', 540, 775);
-                ctx.textAlign = 'left';
+                drawPhotoPlaceholder(ctx, PA);
             }
             ctx.restore();
 
-            // 4. 底部白色資訊區與分隔線
-            ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.moveTo(80, 1340);
-            ctx.lineTo(1000, 1340);
-            ctx.stroke();
+            // 4. 左側細色條 (原版特徵：深藍色直條裝飾)
+            const stripeX = 24;
+            const stripeTop = PA.y + PA.h + 24;
+            const stripeH = 370;
+            ctx.fillStyle = BRAND_COLOR;
+            ctx.fillRect(stripeX, stripeTop, 8, stripeH);
 
-            // 標題前綴
-            ctx.fillStyle = '#64748b';
-            ctx.font = '32px sans-serif';
-            ctx.fillText('我為', 80, 1410);
-
-            ctx.fillStyle = '#b91c1c';
-            ctx.font = 'bold 38px sans-serif';
-            ctx.fillText('吳凡數學 116 戰區', 160, 1410);
-
-            // 學生自訂的動態標題大字
-            ctx.fillStyle = '#0f1a30';
-            ctx.font = '900 64px sans-serif';
-            let userText = userTextInput.value || "頂標上榜";
-            if(userText.length > 12) userText = userText.substring(0, 12) + '...';
-            ctx.fillText(userText, 80, 1500);
-
-            // 動態抓取當下產生的時間戳記
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-            ctx.fillStyle = '#64748b';
-            ctx.font = '30px sans-serif';
-            ctx.fillText(`DATE: ${dateStr}  •  TAIPEI / WU-FAN MATH`, 80, 1570);
-
-            // 5. 右下角現場認證標籤
-            ctx.fillStyle = '#0f1a30';
-            roundRect(ctx, 750, 1630, 250, 60, 30, true, false);
-            ctx.fillStyle = '#ffd700';
-            ctx.font = 'bold 26px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('✔ 戰區現場認證', 875, 1670);
+            // 5. 下方文字資訊區域
             ctx.textAlign = 'left';
+            ctx.textBaseline = 'alphabetic';
 
-            // 版權裝飾字
-            ctx.fillStyle = '#cbd5e1';
-            ctx.font = '24px sans-serif';
-            ctx.fillText('WF-116 SUMMIT PASS OFFICIAL MEMORY CARD', 80, 1780);
+            const startX = 58;
+
+            // 第一行：我是＿＿＿
+            const line1Y = PA.y + PA.h + 96;
+            ctx.font = '900 68px "Noto Sans TC", sans-serif';
+            ctx.fillStyle = '#0f172a';
+            const nameVal = userNameInput.value.trim() || "吳小凡";
+            ctx.fillText(`我是 ${nameVal}`, startX, line1Y);
+
+            // 第二行：我要考上＿＿＿＿大學
+            const line2Y = line1Y + 92;
+            ctx.font = '900 64px "Noto Sans TC", sans-serif';
+            ctx.fillStyle = BRAND_COLOR;
+            const rawUni = targetUniInput.value.trim() || "台灣";
+            const uniVal = rawUni.endsWith("大學") ? rawUni : `${rawUni}`;
+            ctx.fillText(`我要考上 ${uniVal}`, startX, line2Y);
+
+            // 第三行：想對自己說的一段話
+            const line3Y = line2Y + 84;
+            ctx.font = '500 38px "Noto Sans TC", sans-serif';
+            ctx.fillStyle = '#334155';
+            const quoteVal = userQuoteInput.value.trim() || "全力以赴，頂標非我莫屬！";
+            ctx.fillText(quoteVal, startX, line3Y);
+
+            // 第四行：日期與地點（地點固定為吳凡數學）
+            const dateY = line3Y + 68;
+            ctx.font = '600 30px "Barlow Condensed", "Noto Sans TC", sans-serif';
+            ctx.fillStyle = '#64748b';
+            ctx.letterSpacing = '1px';
+            const now = new Date();
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            const dateStr = `${months[now.getMonth()]} ${String(now.getDate()).padStart(2, '0')}, ${now.getFullYear()}`;
+            ctx.fillText(`${dateStr} · 吳凡數學`, startX, dateY);
+            ctx.letterSpacing = '0px';
+
+            // 6. 最底層深藍色微型條 (高度 FOOT_H)
+            ctx.fillStyle = BRAND_COLOR;
+            ctx.fillRect(0, H - FOOT_H, W, FOOT_H);
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.letterSpacing = '4px';
+            ctx.font = '700 21px "Noto Sans TC", sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText('吳凡數學陪你戰115學測', W / 2, H - FOOT_H / 2);
+            ctx.letterSpacing = '0px';
         }
 
-        // 圓角矩形輔助函式
-        function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-            let r = radius;
-            if (typeof r === 'number') {
-                r = {tl: r, tr: r, bl: r, br: r};
-            } else {
-                r = Object.assign({tl: 0, tr: 0, bl: 0, br: 0}, r);
-            }
-            ctx.beginPath();
-            ctx.moveTo(x + r.tl, y);
-            ctx.lineTo(x + width - r.tr, y);
-            ctx.quadraticCurveTo(x + width, y, x + width, y + r.tr);
-            ctx.lineTo(x + width, y + height - r.br);
-            ctx.quadraticCurveTo(x + width, y + height, x + width - r.br, y + height);
-            ctx.lineTo(x + r.bl, y + height);
-            ctx.quadraticCurveTo(x, y + height, x, y + height - r.bl);
-            ctx.lineTo(x, y + r.tl);
-            ctx.quadraticCurveTo(x, y, x + r.tl, y);
-            ctx.closePath();
-            if (fill) ctx.fill();
-            if (stroke) ctx.stroke();
-        }
-
-        // 圖片等比例填滿輔助函式
+        // 圖片等比例裁切置中
         function drawCoverImage(ctx, img, x, y, w, h) {
             let imgRatio = img.width / img.height;
             let targetRatio = w / h;
@@ -252,10 +329,12 @@
             }
         });
 
-        // 監聽文字輸入實時即時更新畫布預覽
-        userTextInput.addEventListener('input', drawCard);
+        // 監聽文字輸入
+        [userNameInput, targetUniInput, userQuoteInput].forEach(inp => {
+            inp.addEventListener('input', drawCard);
+        });
 
-        // 點擊「一鍵合成紀念卡片」按鈕（完美解決 iOS Safari 無法直接下載的問題）
+        // 合成按鈕
         generateBtn.addEventListener('click', function() {
             drawCard();
             const dataURL = canvas.toDataURL('image/png');
@@ -264,19 +343,17 @@
             resultModal.classList.remove('hidden');
         });
 
-        // 關閉彈跳視窗
-        closeModalBtn.addEventListener('click', function() {
-            resultModal.classList.add('hidden');
+        closeModalBtn.addEventListener('click', () => resultModal.classList.add('hidden'));
+        resultModal.addEventListener('click', (e) => {
+            if (e.target === resultModal) resultModal.classList.add('hidden');
         });
 
-        resultModal.addEventListener('click', function(e) {
-            if (e.target === resultModal) {
-                resultModal.classList.add('hidden');
-            }
-        });
-
-        // 初次執行初始化畫布
-        drawCard();
+        // 字體載入完畢後初次渲染
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(drawCard);
+        } else {
+            drawCard();
+        }
     </script>
 </body>
 </html>

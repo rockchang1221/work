@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吳凡數學 - 116 學測戰略通行證紀念相框</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #0b1329;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        h1 {
+            font-size: 1.2rem;
+            text-align: center;
+            letter-spacing: 2px;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        .preview-box {
+            width: 100%;
+            aspect-ratio: 9/16;
+            background: #152238;
+            border: 2px solid #2a3f5f;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        label {
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            background: #1a2942;
+            border: 1px solid #314e7a;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #ffd700;
+        }
+        .file-btn {
+            background: #2b4c7e;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .file-btn:active {
+            background: #1f365d;
+        }
+        #realFileIn {
+            display: none;
+        }
+        .save-btn {
+            background: #ffd700;
+            color: #0b1329;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+        .save-btn:active {
+            opacity: 0.8;
+        }
+        .tip {
+            font-size: 0.75rem;
+            text-align: center;
+            color: #718096;
+            margin-top: -5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>WF-116 戰略通行證</h1>
+    
+    <!-- 預覽畫布區域 -->
+    <div class="preview-box">
+        <canvas id="resultCanvas" width="1080" height="1920"></canvas>
+    </div>
+
+    <div class="control-group">
+        <label>1. 選擇或拍攝你的當前狀態照</label>
+        <label for="realFileIn" class="file-btn">📷 點此上傳 / 拍攝照片</label>
+        <input type="file" id="realFileIn" accept="image/*">
+    </div>
+
+    <div class="control-group">
+        <label>2. 輸入你此刻的決心或廢話</label>
+        <input type="text" id="userTextInput" value="距離台大電機還有 80 天，拼了！" placeholder="輸入想顯示在卡片上的話...">
+    </div>
+
+    <button class="save-btn" id="saveBtn">📥 生成並儲存紀念卡片</button>
+    <div class="tip">手機用戶請點擊按鈕後長按產生的圖片儲存到相簿</div>
+</div>
+
+<script>
+    const canvas = document.getElementById('resultCanvas');
+    const ctx = canvas.getContext('2d');
+    const realFileIn = document.getElementById('realFileIn');
+    const userTextInput = document.getElementById('userTextInput');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // 預設載入一張空白提示圖或預設底色
+    let uploadedImage = null;
+
+    // 初始化畫布畫面
+    function initCanvas() {
+        ctx.fillStyle = '#0b1329';
+        ctx.fillRect(0, 0, 1080, 1920);
+
+        // 畫上預設文字引導
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 48px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('請點擊上方按鈕上傳照片', 540, 960);
+        
+        drawOverlayFrame();
+    }
+
+    // 模擬你的 PNG 外框與動態資訊疊加邏輯
+    function drawOverlayFrame() {
+        // 如果有上傳照片，先畫照片（限制在中間挖空區域，假設區域為 X:90, Y:300, 寬:900, 高:1100）
+        if (uploadedImage) {
+            ctx.save();
+            // 這裡示範將照片剛好塞進預定視窗內
+            ctx.drawImage(uploadedImage, 90, 300, 900, 1100);
+            ctx.restore();
+        }
+
+        // --- 這裡就是你可以替換或對應 Photoshop 座標的地方 ---
+        
+        // 模擬外框裝飾（等你做好 PNG 後，只要用 img 載入你的透明 PNG 即可）
+        ctx.fillStyle = 'rgba(11, 19, 41, 0.85)';
+        // 上方標題欄
+        ctx.fillRect(90, 150, 900, 120);
+        // 下方文字欄
+        ctx.fillRect(90, 1430, 900, 300);
+
+        // 畫上標題文字
+        ctx.fillStyle = '#ffd700';
+        ctx.font = 'bold 50px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('WF-116 SUMMIT PASS', 130, 225);
+
+        // 畫上動態時間戳記 (座標: X:130, Y:1500)
+        const now = new Date();
+        const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
+        ctx.fillStyle = '#a0aec0';
+        ctx.font = '36px sans-serif';
+        ctx.fillText(`CHECK-IN TIME: ${dateStr}`, 130, 1500);
+
+        // 畫上學生自己打的一句話 (座標: X:130, Y:1600)
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 56px sans-serif';
+        // 簡單處理超長文字自動截斷或換行
+        let text = userTextInput.value;
+        if(text.length > 18) text = text.substring(0, 18) + '...';
+        ctx.fillText(text, 130, 1600);
+        
+        // 底部小字
+        ctx.fillStyle = '#ffd700';
+        ctx.font = '28px sans-serif';
+        ctx.fillText('吳凡數學 • 決不退縮', 130, 1690);
+    }
+
+    // 監聽照片上傳
+    realFileIn.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    uploadedImage = img;
+                    redraw();
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // 監聽文字輸入即時更新
+    userTextInput.addEventListener('input', function() {
+        redraw();
+    });
+
+    function redraw() {
+        ctx.fillStyle = '#0b1329';
+        ctx.fillRect(0, 0, 1080, 1920);
+        drawOverlayFrame();
+    }
+
+    // 儲存按鈕
+    saveBtn.addEventListener('click', function() {
+        // 將 Canvas 轉成圖片讓使用者下載或長按儲存
+        const dataURL = canvas.toDataURL('image/png');
+        
+        // 建立一個臨時下載連結
+        const link = document.createElement('a');
+        link.download = 'WF116-Summit-Pass.png';
+        link.href = dataURL;
+        link.click();
+    });
+
+    // 初始化執行
+    initCanvas();
+</script>
+
+</body>
+</html>

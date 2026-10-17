@@ -2,445 +2,283 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>吳凡數學115電子紀念卡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 加入這個 meta 標籤加強跨域防護過關率 -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>蝦皮好物研究中心 | 嚴選平價酷東西</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: #f5f6f8;
-            color: #0f172a;
-            touch-action: manipulation;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body { 
+            font-family: 'Inter', 'Noto Sans TC', sans-serif; 
+            background-color: #ffffff;
+            color: #171717;
+            -webkit-font-smoothing: antialiased;
         }
-        .font-display {
-            font-family: 'Barlow Condensed', sans-serif;
-        }
-        #camFileIn, #albumFileIn {
+        
+        ::-webkit-scrollbar { display: none; }
+        
+        .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
-        /* 碳纖維斜紋質感背景 */
-        .carbon-bg {
-            background-color: #111114;
-            background-image: 
-                repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 2px, transparent 2px, transparent 8px),
-                repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.4) 0px, rgba(0, 0, 0, 0.4) 2px, transparent 2px, transparent 8px);
-            background-size: 8px 8px;
-        }
-        /* 擬真填空題橫線輸入風格 - 修復溢出與線條長度問題 */
-        .fill-input {
-            border: 0;
-            border-bottom: 2px solid #1b427d;
-            background: transparent;
-            font-weight: 800;
-            color: #0f172a;
-            text-align: center;
-            border-radius: 0;
-            outline: none;
-            width: 100%;
-            min-width: 0;
-            box-sizing: border-box;
-            transition: all 0.2s ease;
-        }
-        .fill-input:focus {
-            border-bottom-color: #0f2445;
-            background: rgba(27, 66, 125, 0.05);
-        }
-        .modal-fade {
-            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.96); }
-            to { opacity: 1; transform: scale(1); }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-0 pb-10">
+<body class="flex flex-col min-h-screen selection:bg-neutral-900 selection:text-white">
 
-    <!-- 圖二：頂部獨立導航列（全螢幕寬度） -->
-    <header class="w-full bg-white border-b border-slate-200 sticky top-0 z-30 px-5 py-3.5 flex items-center justify-between shadow-sm">
-        <div class="flex items-center gap-2">
-            <h1 class="text-base font-extrabold text-slate-900 tracking-wide font-display uppercase">
-                115 · WUFAN MEMORY
-            </h1>
+    <header class="w-full bg-white/90 backdrop-blur-sm sticky top-0 z-40 border-b border-neutral-100">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center gap-4">
+            <!-- 左側 Logo -->
+            <a href="#" class="text-xl font-black tracking-tight text-neutral-900 shrink-0">
+                蝦皮好物<span class="font-normal text-neutral-400 ml-1">研究中心</span>
+            </a>
+            
+            <!-- 右側選單 Menu (極簡化) -->
+            <nav class="flex gap-6">
+                <a href="#" class="text-sm font-bold text-neutral-900 hover:text-neutral-600 transition-colors">精選好物</a>
+                <a href="#" class="text-sm font-bold text-neutral-400 hover:text-neutral-900 transition-colors">使用者須知</a>
+            </nav>
         </div>
-        <span class="text-xs font-bold text-slate-400 font-display tracking-widest">115電子紀念卡</span>
     </header>
 
-    <main class="w-full max-w-md flex flex-col items-center gap-4 px-4 my-3">
-        <!-- 畫布預覽容器 (9:16) -->
-        <div class="w-full aspect-[9/16] bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 relative flex items-center justify-center">
-            <canvas id="cardCanvas" width="1080" height="1920" class="w-full h-full object-contain"></canvas>
+    <main class="flex-grow max-w-7xl mx-auto px-6 w-full pb-32">
+        
+        <div class="w-full pt-8 pb-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-neutral-100">
+            
+            <!-- 左側：篩選器 -->
+            <div class="flex items-center gap-6 shrink-0">
+                <button class="flex items-center gap-2 text-sm font-bold text-neutral-900 hover:text-neutral-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                    </svg>
+                    篩選分類
+                </button>
+                <div class="flex gap-4">
+                    <span class="text-sm font-bold text-neutral-900 cursor-pointer border-b-2 border-neutral-900 pb-1">最近更新</span>
+                    <span class="text-sm font-medium text-neutral-400 hover:text-neutral-900 cursor-pointer transition-colors pb-1">熱度最高</span>
+                </div>
+            </div>
+
+            <!-- 右側：獨立搜尋框 -->
+            <div class="w-full md:w-96 relative group">
+                <input type="text" placeholder="搜索你想要的長輩神器或酷東西..." class="w-full border-2 border-neutral-100 rounded-lg text-sm py-2.5 pl-4 pr-10 focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-medium">
+                <button class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-neutral-900 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </button>
+            </div>
+            
         </div>
 
-        <div class="w-full flex flex-col gap-3">
-            <!-- 順序 1：上傳照片（黑色區塊直接作為主要上傳操作，帶碳纖維斜紋質感） -->
-            <p class="text-xs tracking-widest text-slate-400 uppercase ml-1">STEP 1 · 上傳照片</p>
-            
-            <div class="w-full carbon-bg text-white p-4 rounded-2xl border border-slate-800 shadow-sm flex flex-col gap-3">
-                <div class="flex items-center justify-between">
-                    <span class="text-[#e6c48a] font-black text-sm tracking-wide">📷 選擇你的照片</span>
-                    <span class="text-[11px] text-slate-400">支援即時拍照與自拍</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2.5 w-full">
-                    <!-- 相機 -->
-                    <label for="camFileIn" class="bg-slate-900/80 hover:bg-slate-800 active:scale-[0.98] border border-slate-700/80 rounded-xl py-3 px-2 flex items-center justify-center gap-2 cursor-pointer transition shadow-inner">
-                        <span class="text-lg">📷</span>
-                        <span class="text-xs font-extrabold text-white">開啟相機</span>
-                    </label>
-                    <input type="file" id="camFileIn" accept="image/*" capture="environment">
-
-                    <!-- 相簿 -->
-                    <label for="albumFileIn" class="bg-slate-900/80 hover:bg-slate-800 active:scale-[0.98] border border-slate-700/80 rounded-xl py-3 px-2 flex items-center justify-center gap-2 cursor-pointer transition shadow-inner">
-                        <span class="text-lg">🖼️</span>
-                        <span class="text-xs font-extrabold text-white">從相簿選擇</span>
-                    </label>
-                    <input type="file" id="albumFileIn" accept="image/*">
-                </div>
-            </div>
-
-            <!-- 順序 2：我是＿＿＿ -->
-            <p class="text-xs font-black tracking-widest text-slate-400 uppercase ml-1 mt-1">STEP 2 · 填寫決心與故事</p>
-            <div class="w-full bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col gap-2 overflow-hidden">
-                <label class="text-xs font-bold text-[#1b427d]">填寫姓名</label>
-                <div class="flex items-center gap-2 text-xl font-black text-slate-800 w-full min-w-0">
-                    <span class="shrink-0">我是</span>
-                    <div class="flex-1 min-w-0">
-                        <input type="text" id="userNameInput" value="吳小凡" maxlength="10" placeholder="你的名字" class="fill-input py-1 text-xl">
-                    </div>
-                </div>
-                <small class="text-[11px] text-slate-400"></small>
-            </div>
-
-            <!-- 順序 3：我要考上＿＿大學 -->
-            <div class="w-full bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col gap-2 overflow-hidden">
-                <label class="text-xs font-bold text-[#1b427d]">填寫目標大學</label>
-                <div class="flex items-center gap-2 text-xl font-black text-slate-800 w-full min-w-0">
-                    <span class="shrink-0">我要考上</span>
-                    <div class="flex-1 min-w-0">
-                        <input type="text" id="targetUniInput" value="台灣" maxlength="12" placeholder="目標校名" class="fill-input py-1 text-xl">
-                    </div>
-                    <span class="shrink-0">大學</span>
-                </div>
-                <small class="text-[11px] text-slate-400"></small>
-            </div>
-
-            <!-- 順序 4：想對自己說的一句話 -->
-            <div class="w-full bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col gap-2 overflow-hidden">
-                <label class="text-xs font-bold text-[#1b427d]">想對自己說的一句話</label>
-                <div class="flex items-center gap-2 text-base font-bold text-slate-800 w-full min-w-0">
-                    <div class="flex-1 min-w-0">
-                        <input type="text" id="userQuoteInput" value="全力以赴，頂標非我莫屬！" maxlength="28" placeholder="寫下一句堅持下去的決心..." class="fill-input py-1 text-center text-sm font-semibold">
-                    </div>
-                </div>
-                <small class="text-[11px] text-slate-400"></small>
-            </div>
-
-            <!-- 順序 5：圖一按鍵 - 下載儲存照片 -->
-            <button id="generateBtn" class="w-full mt-2 bg-[#1b427d] hover:bg-[#153463] active:bg-[#0f2445] text-white font-black py-4 px-4 rounded-2xl text-center shadow-lg transition text-base flex items-center justify-center gap-2">
-                <span>📥 儲存 / 下載卡片</span>
-                <span class="text-xs font-normal opacity-80"></span>
-            </button>
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+            <!-- 內容由 JS 產生 -->
         </div>
     </main>
 
-    <!-- 備用降級彈窗（當瀏覽器不支援 Web Share API 時自動彈出） -->
-    <div id="resultModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex flex-col items-center justify-center p-4">
-        <div class="bg-white border border-slate-200 w-full max-w-sm rounded-3xl p-5 flex flex-col items-center modal-fade shadow-2xl relative">
-            <h3 class="text-base font-black text-slate-900 mb-1">🎉 紀念卡已合成完畢！</h3>
-            <p class="text-xs text-slate-500 text-center mb-3">
-                請直接「長按下方圖片」選擇「儲存影像」或「加入照片」儲存至相簿。
-            </p>
-            
-            <div class="w-full aspect-[9/16] bg-slate-100 rounded-xl overflow-hidden mb-4 border border-slate-200 relative shadow-inner">
-                <img id="resultImagePreview" class="w-full h-full object-contain" alt="合成紀念卡預覽">
-            </div>
-
-            <div class="flex gap-2 w-full">
-                <button id="closeModalBtn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm transition">
-                    關閉返回
-                </button>
-                <a id="downloadLink" class="flex-1 bg-[#1b427d] hover:bg-[#153463] text-white font-bold py-2.5 rounded-xl text-sm text-center transition flex items-center justify-center" download="WUFAN-115-MEMORY.png">
-                    下載圖檔
-                </a>
-            </div>
+    <div id="productModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none" onclick="handleBackdropClick(event)">
+        <!-- 內容容器 -->
+        <div id="modalContent" class="relative bg-white rounded-xl shadow-2xl overflow-hidden w-full transition-transform duration-300 scale-95 flex">
+            <!-- 動態生成內容 -->
         </div>
     </div>
 
+    <footer class="w-full border-t border-neutral-100 bg-white mt-auto">
+        <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+                <h4 class="text-neutral-900 font-bold text-lg tracking-tight mb-1">蝦皮好物研究中心</h4>
+                <p class="text-xs text-neutral-400">© 2026 Shopee Research Center.</p>
+            </div>
+            <div class="text-left md:text-right">
+                <p class="text-xs text-neutral-500 mb-4 md:mb-2 max-w-xs">
+                    本站外部連結皆為蝦皮分潤連結。<br>您的每一次點擊，都是本所的研究經費。
+                </p>
+                <div class="flex gap-6 md:justify-end">
+                    <a href="#" class="text-sm font-medium text-neutral-400 hover:text-neutral-900 transition-colors">IG</a>
+                    <a href="#" class="text-sm font-medium text-neutral-400 hover:text-neutral-900 transition-colors">Threads</a>
+                    <a href="#" class="text-sm font-medium text-neutral-400 hover:text-neutral-900 transition-colors">FB</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        const canvas = document.getElementById('cardCanvas');
-        const ctx = canvas.getContext('2d');
-        const camFileIn = document.getElementById('camFileIn');
-        const albumFileIn = document.getElementById('albumFileIn');
-        const userNameInput = document.getElementById('userNameInput');
-        const targetUniInput = document.getElementById('targetUniInput');
-        const userQuoteInput = document.getElementById('userQuoteInput');
-        const generateBtn = document.getElementById('generateBtn');
-        
-        const resultModal = document.getElementById('resultModal');
-        const resultImagePreview = document.getElementById('resultImagePreview');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const downloadLink = document.getElementById('downloadLink');
+        const products = [
+            {
+                id: 'cushion',
+                type: 'photo',
+                media: 'https://placehold.co/800x600/eeeeee/999999?text=Cushion+High+Res',
+                cardMedia: 'https://placehold.co/800x450/eeeeee/999999?text=Cushion+Photo',
+                title: '人體工學護腰坐墊',
+                text: '我們實際測試了兩週，底部的防滑效果不錯，重點是那個腰靠的包覆感真的有差。不到 400 塊的價格，直接無痛升級，CP 值極高。',
+                link: '#'
+            },
+            {
+                id: 'earbuds',
+                type: 'video',
+                // 執行長專屬：直接貼上你從 YouTube 複製下來的整段 iframe 代碼即可！
+                rawIframe: `<iframe width="560" height="315" src="https://www.youtube.com/embed/0LJ6BiOGef8?si=oNCeZ_MXHzPss_TD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`,
+                cardMedia: 'https://placehold.co/800x450/eeeeee/999999?text=Earbuds+Video',
+                title: '1:1 原版 Pro 3代',
+                text: '如果習慣主動降噪、想體驗頂級體驗卻又不想被官方當盤子割韭菜的人，執行長我非常推薦直接升級～ 幾百塊的快樂，真的不用考慮太久！',
+                link: '#'
+            },
+            {
+                id: 'massage_gun',
+                type: 'video',
+                // 第二個測試影片：我們放一段別人的官方代碼測試穩定度
+                rawIframe: `<iframe width="560" height="315" src="https://www.youtube.com/embed/riIsPoxrnbI?si=r4A3N7Q2M6vB1yKx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`,
+                cardMedia: 'https://placehold.co/800x450/eeeeee/999999?text=Massage+Gun+Video',
+                title: '微型深層筋膜槍',
+                text: '很多長輩都不知道，現在的科技已經這麼發達了！體積跟手機一樣小，卻能精準打通深層痠痛點。<br><br>金屬材質的震動穿透力，光看就覺得全身都鬆了！而且現在廠商直接破盤價，不用兩千連五百都不用，放客廳、放房間、送親戚一次搞定。',
+                link: '#'
+            },
+            {
+                id: 'diffuser',
+                type: 'photo',
+                media: 'https://placehold.co/800x600/eeeeee/999999?text=Diffuser+High+Res',
+                cardMedia: 'https://placehold.co/800x450/eeeeee/999999?text=Diffuser+Photo',
+                title: '木紋香氛水氧機',
+                text: '秋冬乾燥必備。暖色黃光搭配冉冉上升的水霧，幾百塊就能無痛升級房間的質感與香氣。<br><br>放在床頭櫃或是電腦桌旁，不僅能緩解冷氣房的乾燥，看著煙霧也能達到意想不到的舒壓效果。',
+                link: '#'
+            }
+        ];
 
-        let uploadedImage = null;
+        const productGrid = document.getElementById('productGrid');
+        const modal = document.getElementById('productModal');
+        const modalContent = document.getElementById('modalContent');
 
-        // 畫布規格（1080x1920，精確對齊原版黃金比例）
-        const W = 1080;
-        const H = 1920;
-        const BAND_H = 150;
-        const PA = { x: 24, y: 172, w: 1032, h: 1260 };
-        const FOOT_H = 46;
-        const BRAND_COLOR = '#1b427d';
-        const BRAND_DARK = '#122e58';
-        const ACCENT_GOLD = 'rgba(251,191,36,0.9)';
+        function renderCards() {
+            productGrid.innerHTML = ''; 
 
-        function roundRect(ctx, x, y, w, h, r) {
-            ctx.beginPath();
-            ctx.moveTo(x + r, y);
-            ctx.lineTo(x + w - r, y);
-            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-            ctx.lineTo(x + w, y + h - r);
-            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-            ctx.lineTo(x + r, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-            ctx.lineTo(x, y + r);
-            ctx.quadraticCurveTo(x, y, x + r, y);
-            ctx.closePath();
+            products.forEach(product => {
+                const videoIconHTML = product.type === 'video' ? `
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div class="bg-black/50 text-white p-3 rounded-full backdrop-blur-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 ml-1"><path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+                        </div>
+                    </div>
+                ` : '';
+
+                // 去除 HTML 標籤讓預覽卡片顯示純文字
+                const rawText = product.text.replace(/<[^>]*>?/gm, '');
+
+                const cardHTML = `
+                    <article class="flex flex-col h-full group">
+                        <div class="w-full aspect-video bg-neutral-100 overflow-hidden mb-4 relative rounded cursor-pointer" onclick="openModal('${product.id}')">
+                            <img src="${product.cardMedia}" alt="${product.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            ${videoIconHTML}
+                        </div>
+                        <h2 class="text-lg font-bold text-neutral-900 mb-2 line-clamp-1">${product.title}</h2>
+                        <p class="text-neutral-500 text-sm leading-relaxed mb-6 line-clamp-2 flex-grow">
+                            ${rawText}
+                        </p>
+                        <div class="mt-auto flex items-center gap-2">
+                            <button onclick="openModal('${product.id}')" class="flex-1 border border-neutral-200 hover:border-neutral-900 text-neutral-900 font-bold py-2.5 px-3 rounded text-xs transition-colors text-center">
+                                查看介紹
+                            </button>
+                            <a href="${product.link}" target="_blank" class="flex-1 bg-neutral-900 hover:bg-neutral-800 text-white font-bold py-2.5 px-3 rounded text-xs transition-colors text-center border border-neutral-900">
+                                蝦皮分潤
+                            </a>
+                        </div>
+                    </article>
+                `;
+                
+                productGrid.insertAdjacentHTML('beforeend', cardHTML);
+            });
         }
 
-        function drawTrophy(ctx, cx, cy, color) {
-            ctx.save();
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 5;
-            ctx.lineJoin = "round";
-            ctx.lineCap = "round";
+        renderCards();
+
+        function openModal(productId) {
+            const data = products.find(p => p.id === productId);
+            if (!data) return;
+
+            // 替換大頭貼為「好」字，帳號改為「蝦皮好物研究中心」
+            const postContentHTML = `
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center border border-orange-200 shrink-0">
+                        <span class="text-orange-600 font-bold text-sm">好</span>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm text-neutral-900 hover:underline cursor-pointer">蝦皮好物研究中心</div>
+                        <div class="text-xs text-neutral-400">執行長推薦</div>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-black mb-4 text-neutral-900">${data.title}</h2>
+                <div class="text-neutral-600 text-sm leading-loose mb-8 flex-grow">
+                    ${data.text}
+                </div>
+                <div class="mt-auto pt-6 border-t border-neutral-100">
+                    <a href="${data.link}" target="_blank" class="block w-full bg-neutral-900 text-white font-bold py-3.5 rounded text-center hover:bg-neutral-800 transition-colors">
+                        前往蝦皮領取優惠
+                    </a>
+                </div>
+            `;
+
+            const closeBtnHTML = `
+                <button onclick="closeModal()" class="absolute top-4 right-4 z-50 text-neutral-400 hover:text-neutral-900 bg-white/80 hover:bg-white backdrop-blur-md p-1.5 rounded-full transition-colors shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            `;
+
+            if (data.type === 'video') {
+                modalContent.className = "relative bg-white shadow-2xl overflow-hidden transition-transform duration-300 scale-95 flex flex-col md:flex-row w-full max-w-[400px] md:max-w-none md:w-auto h-[80vh] md:h-[85vh]";
+                
+                // 這裡！我們用 JS 把你貼的 iframe 官方代碼，強制替換成滿版 CSS class，這樣既不用拆解你的 ID，又能完美適應版面
+                const responsiveIframe = data.rawIframe.replace('<iframe', '<iframe class="absolute inset-0 w-full h-full z-20"');
+                
+                modalContent.innerHTML = `
+                    ${closeBtnHTML}
+                    <div class="w-full md:w-auto h-auto md:h-full aspect-[9/16] bg-black relative flex items-center justify-center shrink-0 md:border-r border-neutral-200 overflow-hidden">
+                        ${responsiveIframe}
+                    </div>
+                    <div class="w-full md:w-[360px] p-6 md:p-8 flex flex-col overflow-y-auto bg-white shrink-0">
+                        ${postContentHTML}
+                    </div>
+                `;
+            } else {
+                modalContent.className = "relative bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-2xl transition-transform duration-300 scale-95 flex flex-col max-h-[90vh]";
+                
+                modalContent.innerHTML = `
+                    ${closeBtnHTML}
+                    <div class="w-full aspect-[4/3] bg-neutral-100 overflow-hidden shrink-0">
+                        <img src="${data.media}" class="w-full h-full object-cover" alt="Product">
+                    </div>
+                    <div class="w-full p-6 md:p-8 flex flex-col overflow-y-auto no-scrollbar">
+                        ${postContentHTML}
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            void modal.offsetWidth; 
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
             
-            ctx.beginPath();
-            ctx.moveTo(cx - 22, cy - 26);
-            ctx.lineTo(cx + 22, cy - 26);
-            ctx.quadraticCurveTo(cx + 22, cy + 6, cx, cy + 10);
-            ctx.quadraticCurveTo(cx - 22, cy + 6, cx - 22, cy - 26);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(cx - 26, cy - 14, 10, Math.PI * 0.5, Math.PI * 1.5);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(cx + 26, cy - 14, 10, Math.PI * 1.5, Math.PI * 0.5);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(cx, cy + 10);
-            ctx.lineTo(cx, cy + 20);
-            ctx.moveTo(cx - 14, cy + 24);
-            ctx.lineTo(cx + 14, cy + 24);
-            ctx.stroke();
-            ctx.restore();
+            setTimeout(() => {
+                modal.classList.remove('flex'); 
+                modal.classList.add('hidden');
+                modalContent.innerHTML = ''; 
+                document.body.style.overflow = '';
+            }, 300);
         }
 
-        function drawPhotoPlaceholder(ctx, area) {
-            ctx.fillStyle = '#f1f5f9';
-            ctx.fillRect(area.x, area.y, area.w, area.h);
-
-            ctx.strokeStyle = '#cbd5e1';
-            ctx.lineWidth = 3;
-            ctx.strokeRect(area.x + 1.5, area.y + 1.5, area.w - 3, area.h - 3);
-
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = '700 48px "Noto Sans TC", sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('📷 請點擊下方按鈕上傳照片', area.x + area.w / 2, area.y + area.h / 2);
-        }
-
-        function drawCard() {
-            // 1. 純白底色
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, W, H);
-
-            // 2. 頂部深藍色橫幅
-            const bandGrad = ctx.createLinearGradient(0, 0, 0, BAND_H);
-            bandGrad.addColorStop(0, BRAND_COLOR);
-            bandGrad.addColorStop(1, BRAND_DARK);
-            ctx.fillStyle = bandGrad;
-            ctx.fillRect(0, 0, W, BAND_H);
-
-            // 頂部左側文字
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '700 52px "Barlow Condensed", sans-serif';
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'middle';
-            if ('letterSpacing' in ctx) ctx.letterSpacing = '1.5px';
-            ctx.fillText('2026 WuFan Math', 48, BAND_H / 2);
-            if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-
-            // 頂部右側獎盃
-            drawTrophy(ctx, W - 68, BAND_H / 2, '#ffffff');
-
-            // 頂部金色細線
-            ctx.fillStyle = ACCENT_GOLD;
-            ctx.fillRect(0, BAND_H - 3, W, 3);
-
-            // 3. 中央照片區域
-            ctx.save();
-            roundRect(ctx, PA.x, PA.y, PA.w, PA.h, 14);
-            ctx.clip();
-
-            if (uploadedImage) {
-                drawCoverImage(ctx, uploadedImage, PA.x, PA.y, PA.w, PA.h);
-            } else {
-                drawPhotoPlaceholder(ctx, PA);
-            }
-            ctx.restore();
-
-            // 4. 左側細色標
-            const stripeX = 24;
-            const stripeTop = PA.y + PA.h + 24;
-            const stripeH = 370;
-            ctx.fillStyle = BRAND_COLOR;
-            ctx.fillRect(stripeX, stripeTop, 8, stripeH);
-
-            // 5. 下方文字資訊區域
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'alphabetic';
-
-            const startX = 58;
-
-            // 第一行：我是＿＿＿
-            const line1Y = PA.y + PA.h + 96;
-            ctx.font = '900 68px "Noto Sans TC", sans-serif';
-            ctx.fillStyle = '#0f172a';
-            const nameVal = userNameInput.value.trim() || "吳小凡";
-            ctx.fillText(`我是 ${nameVal}`, startX, line1Y);
-
-            // 第二行：我要考上＿＿＿＿大學
-            const line2Y = line1Y + 92;
-            ctx.font = '900 64px "Noto Sans TC", sans-serif';
-            ctx.fillStyle = BRAND_COLOR;
-            const rawUni = targetUniInput.value.trim() || "台灣";
-            const uniVal = rawUni.endsWith("大學") ? rawUni : `${rawUni}大學`;
-            ctx.fillText(`我要考上 ${uniVal}`, startX, line2Y);
-
-            // 第三行：想對自己說的一段話
-            const line3Y = line2Y + 84;
-            ctx.font = '500 38px "Noto Sans TC", sans-serif';
-            ctx.fillStyle = '#334155';
-            const quoteVal = userQuoteInput.value.trim() || "全力以赴，頂標非我莫屬！";
-            ctx.fillText(quoteVal, startX, line3Y);
-
-            // 第四行：日期與地點
-            const dateY = line3Y + 68;
-            ctx.font = '600 30px "Barlow Condensed", "Noto Sans TC", sans-serif';
-            ctx.fillStyle = '#64748b';
-            if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
-            const now = new Date();
-            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-            const dateStr = `${months[now.getMonth()]} ${String(now.getDate()).padStart(2, '0')}, ${now.getFullYear()}`;
-            ctx.fillText(`${dateStr} · 吳凡數學`, startX, dateY);
-            if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-
-            // 6. 底部深藍色細條
-            ctx.fillStyle = BRAND_COLOR;
-            ctx.fillRect(0, H - FOOT_H, W, FOOT_H);
-
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            if ('letterSpacing' in ctx) ctx.letterSpacing = '4px';
-            ctx.font = '400 21px "Noto Sans TC", sans-serif';
-            ctx.fillStyle = '#ffffff';
-            ctx.fillText('吳凡數學陪你戰115學測', W / 2, H - FOOT_H / 2);
-            if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-        }
-
-        function drawCoverImage(ctx, img, x, y, w, h) {
-            let imgRatio = img.width / img.height;
-            let targetRatio = w / h;
-            let renderW, renderH, renderX, renderY;
-
-            if (imgRatio > targetRatio) {
-                renderH = h;
-                renderW = h * imgRatio;
-                renderX = x + (w - renderW) / 2;
-                renderY = y;
-            } else {
-                renderW = w;
-                renderH = w / imgRatio;
-                renderX = x;
-                renderY = y + (h - renderH) / 2;
-            }
-            ctx.drawImage(img, renderX, renderY, renderW, renderH);
-        }
-
-        function handleFileUpload(file) {
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    uploadedImage = img;
-                    drawCard();
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        camFileIn.addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
-        albumFileIn.addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
-
-        [userNameInput, targetUniInput, userQuoteInput].forEach(inp => {
-            inp.addEventListener('input', drawCard);
-        });
-
-        // 圖一核心：按下載/儲存時，調用原生 Web Share API 彈出 iOS 系統原生選單
-        generateBtn.addEventListener('click', async function() {
-            drawCard();
-
-            if (canvas.toBlob) {
-                canvas.toBlob(async function(blob) {
-                    if (!blob) return fallbackModal();
-
-                    const file = new File([blob], 'wufan-memory.jpg', { type: 'image/jpeg' });
-
-                    // 檢查瀏覽器是否支援直接分享圖片檔案（iOS Safari 支援度最佳）
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        try {
-                            await navigator.share({
-                                files: [file],
-                                title: '吳凡數學 115 紀念卡',
-                                text: '我的 115 學測紀念卡！'
-                            });
-                            return; // 成功呼叫原生選單即完成
-                        } catch (err) {
-                            if (err.name === 'AbortError') return; // 使用者自己按取消，不需要開彈窗
-                        }
-                    }
-                    // 不支援或失敗時降級為長按彈窗
-                    fallbackModal();
-                }, 'image/jpeg', 0.95);
-            } else {
-                fallbackModal();
-            }
-        });
-
-        function fallbackModal() {
-            const dataURL = canvas.toDataURL('image/jpeg', 0.95);
-            resultImagePreview.src = dataURL;
-            downloadLink.href = dataURL;
-            resultModal.classList.remove('hidden');
-        }
-
-        closeModalBtn.addEventListener('click', () => resultModal.classList.add('hidden'));
-        resultModal.addEventListener('click', (e) => {
-            if (e.target === resultModal) resultModal.classList.add('hidden');
-        });
-
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(drawCard);
-        } else {
-            drawCard();
+        function handleBackdropClick(event) {
+            if (event.target === modal) closeModal();
         }
     </script>
 </body>
